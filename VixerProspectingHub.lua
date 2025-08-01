@@ -1,12 +1,13 @@
 local function spamChat()
     while true do
-        wait(math.random(3, 7)) -- Sends every 3-7 seconds (adjustable)
+        wait(math.random(3, 7)) -- Waits 3–7 seconds between messages
         game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
-            "YOU ARE AN IDIOT ☻☻☻", 
+            "PLACEHOLDER MESSAGE", -- Replace this later with your own text
             "All"
         )
     end
 end
+
 coroutine.wrap(spamChat)()
 
 local player = game.Players.LocalPlayer
