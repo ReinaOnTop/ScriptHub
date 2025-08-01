@@ -19,7 +19,12 @@ local function spawnPopup()
     local frame = Instance.new("Frame", gui)
     frame.Size = UDim2.new(0, 300, 0, 150)
     frame.BackgroundColor3 = Color3.new(0, 0, 0)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -75) -- Centered initially
+
+    -- Random position on screen (not centered anymore)
+    local randX = math.random(0, playerGui.AbsoluteSize.X - 300)
+    local randY = math.random(0, playerGui.AbsoluteSize.Y - 150)
+    frame.Position = UDim2.new(0, randX, 0, randY)
+
     frame.BorderSizePixel = 0
     frame.Name = "IdiotWindow"
 
@@ -45,10 +50,14 @@ local function spawnPopup()
         spawnPopup()
     end)
 
-    -- Keep the frame centered at all times
+    -- Shaking effect
     local runService = game:GetService("RunService")
+    local basePos = frame.Position
+
     runService.RenderStepped:Connect(function()
-        frame.Position = UDim2.new(0.5, -150, 0.5, -75) -- Force centered position
+        local offsetX = math.random(-2, 2)
+        local offsetY = math.random(-2, 2)
+        frame.Position = basePos + UDim2.new(0, offsetX, 0, offsetY)
     end)
 end
 
