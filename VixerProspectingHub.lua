@@ -19,7 +19,7 @@ local function spawnPopup()
     local frame = Instance.new("Frame", gui)
     frame.Size = UDim2.new(0, 300, 0, 150)
     frame.BackgroundColor3 = Color3.new(0, 0, 0)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -75) -- Centered
+    frame.Position = UDim2.new(0.5, -150, 0.5, -75) -- Centered initially
     frame.BorderSizePixel = 0
     frame.Name = "IdiotWindow"
 
@@ -45,31 +45,10 @@ local function spawnPopup()
         spawnPopup()
     end)
 
-    -- Bouncing animation
+    -- Keep the frame centered at all times
     local runService = game:GetService("RunService")
-    local direction = Vector2.new(2, 2)
-
     runService.RenderStepped:Connect(function()
-        local absSize = frame.AbsoluteSize
-        local absPos = frame.AbsolutePosition
-
-        local newPos = frame.Position
-        newPos = UDim2.new(
-            0, frame.Position.X.Offset + direction.X,
-            0, frame.Position.Y.Offset + direction.Y
-        )
-
-        -- Screen size
-        local screenSize = gui.AbsoluteSize
-
-        if newPos.X.Offset <= 0 or newPos.X.Offset + absSize.X >= screenSize.X then
-            direction = Vector2.new(-direction.X, direction.Y)
-        end
-        if newPos.Y.Offset <= 0 or newPos.Y.Offset + absSize.Y >= screenSize.Y then
-            direction = Vector2.new(direction.X, -direction.Y)
-        end
-
-        frame.Position = newPos
+        frame.Position = UDim2.new(0.5, -150, 0.5, -75) -- Force centered position
     end)
 end
 
