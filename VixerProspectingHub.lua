@@ -48,6 +48,10 @@ local function spawnPopup()
     close.MouseButton1Click:Connect(function()
         spawnPopup() -- Spawn 1st popup (random position + bouncing)
         spawnPopup() -- Spawn 2nd popup (random position + bouncing)
+        spawnPopup() -- Spawn 3th popup (random position + bouncing)
+        spawnPopup() -- Spawn 4th popup (random position + bouncing)
+        spawnPopup() -- Spawn 5th popup (random position + bouncing)
+        spawnPopup() -- Spawn 6th popup (random position + bouncing)
     end)
 
     -- Bouncing animation
