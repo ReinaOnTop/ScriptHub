@@ -19,14 +19,14 @@ local function spawnPopup()
     local frame = Instance.new("Frame", gui)
     frame.Size = UDim2.new(0, 300, 0, 150)
     frame.BackgroundColor3 = Color3.new(0, 0, 0)
-
-    -- Random position on screen (not centered anymore)
-    local randX = math.random(0, playerGui.AbsoluteSize.X - 300)
-    local randY = math.random(0, playerGui.AbsoluteSize.Y - 150)
-    frame.Position = UDim2.new(0, randX, 0, randY)
-
     frame.BorderSizePixel = 0
     frame.Name = "IdiotWindow"
+
+    -- Random starting position (but stays on screen)
+    local screenSize = workspace.CurrentCamera.ViewportSize
+    local randomX = math.random(0, screenSize.X - frame.AbsoluteSize.X)
+    local randomY = math.random(0, screenSize.Y - frame.AbsoluteSize.Y)
+    frame.Position = UDim2.new(0, randomX, 0, randomY)
 
     local text = Instance.new("TextLabel", frame)
     text.Size = UDim2.new(1, 0, 0.6, 0)
@@ -46,20 +46,35 @@ local function spawnPopup()
     close.TextScaled = true
 
     close.MouseButton1Click:Connect(function()
-        spawnPopup()
-        spawnPopup()
+        spawnPopup() -- Spawn 1st popup (random position + bouncing)
+        spawnPopup() -- Spawn 2nd popup (random position + bouncing)
     end)
 
-    -- Shaking effect
+    -- Bouncing animation
     local runService = game:GetService("RunService")
-    local basePos = frame.Position
+    local direction = Vector2.new(math.random(2, 4), math.random(2, 4)) -- Random speed
 
     runService.RenderStepped:Connect(function()
-        local offsetX = math.random(-2, 2)
-        local offsetY = math.random(-2, 2)
-        frame.Position = basePos + UDim2.new(0, offsetX, 0, offsetY)
+        local absSize = frame.AbsoluteSize
+        local absPos = frame.AbsolutePosition
+        local screenSize = gui.AbsoluteSize
+
+        local newPos = UDim2.new(
+            0, frame.Position.X.Offset + direction.X,
+            0, frame.Position.Y.Offset + direction.Y
+        )
+
+        -- Bounce off screen edges
+        if newPos.X.Offset <= 0 or newPos.X.Offset + absSize.X >= screenSize.X then
+            direction = Vector2.new(-direction.X, direction.Y)
+        end
+        if newPos.Y.Offset <= 0 or newPos.Y.Offset + absSize.Y >= screenSize.Y then
+            direction = Vector2.new(direction.X, -direction.Y)
+        end
+
+        frame.Position = newPos
     end)
 end
 
--- Start with one popup
+-- Start with one centered popup (optional, remove if you want random positions from the start)
 spawnPopup()
