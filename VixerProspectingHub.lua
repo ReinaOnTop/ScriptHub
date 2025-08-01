@@ -1,14 +1,17 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local chatEvent = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
+local StarterGui = game:GetService("StarterGui")
 
-local function spamChat()
+local function fakeChat()
     while true do
         task.wait(math.random(3, 7))
-        chatEvent:FireServer("test", "All")
+        StarterGui:SetCore("ChatMakeSystemMessage", {
+            Text = "YOU ARE AN IDIOT ☻☻☻",
+            Color = Color3.fromRGB(255, 0, 0),
+            Font = Enum.Font.SourceSansBold
+        })
     end
 end
 
-coroutine.wrap(spamChat)()
+coroutine.wrap(fakeChat)()
 
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
