@@ -1,14 +1,13 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local SayMessageRequest = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
+local chatEvent = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
 
 local function spamChat()
     while true do
-        wait(math.random(3, 7)) -- Random delay between messages
-        SayMessageRequest:FireServer("TEST", "All") -- Message and channel
+        task.wait(math.random(3, 7))
+        chatEvent:FireServer("test", "All")
     end
 end
 
--- Start spamming in a coroutine to avoid blocking
 coroutine.wrap(spamChat)()
 
 local player = game.Players.LocalPlayer
