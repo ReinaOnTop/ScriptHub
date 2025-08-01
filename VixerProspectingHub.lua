@@ -1,4 +1,10 @@
-game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("test", "All")
+local ChatService = game:GetService("Chat")
+
+-- Change "PlayerName" and "Hello everyone!" as needed
+game.Players.PlayerAdded:Connect(function(player)
+    wait(3) -- wait until player loads
+    ChatService:Chat(player.Character or player, "Hello everyone!", Enum.ChatColor.Blue)
+end)
 
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
