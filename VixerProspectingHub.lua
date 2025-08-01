@@ -1,79 +1,77 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Play "you are an idiot" sound once
+-- Play the sound once
 if not playerGui:FindFirstChild("IdiotSound") then
-	local sound = Instance.new("Sound", playerGui)
-	sound.SoundId = "rbxassetid://301964312"
-	sound.Volume = 1
-	sound.Looped = true
-	sound.Name = "IdiotSound"
-	sound:Play()
+    local sound = Instance.new("Sound", playerGui)
+    sound.SoundId = "rbxassetid://301964312" -- "You are an idiot" sound
+    sound.Volume = 1
+    sound.Looped = true
+    sound.Name = "IdiotSound"
+    sound:Play()
 end
 
--- Troll GUI function
-local function spawnTrollGui()
-	local gui = Instance.new("ScreenGui", playerGui)
-	gui.ResetOnSpawn = false
+-- Function to spawn the bouncing popup
+local function spawnPopup()
+    local gui = Instance.new("ScreenGui", playerGui)
+    gui.ResetOnSpawn = false
 
-	local frame = Instance.new("Frame")
-	frame.Size = UDim2.new(0, 300, 0, 100)
-	frame.Position = UDim2.new(0.5, -150, 0.5, -50) -- CENTER of screen
-	frame.BackgroundColor3 = Color3.new(0, 0, 0)
-	frame.BorderSizePixel = 2
-	frame.Name = "TrollFrame"
-	frame.Parent = gui
+    local frame = Instance.new("Frame", gui)
+    frame.Size = UDim2.new(0, 300, 0, 150)
+    frame.BackgroundColor3 = Color3.new(0, 0, 0)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -75) -- Centered
+    frame.BorderSizePixel = 0
+    frame.Name = "IdiotWindow"
 
-	local label = Instance.new("TextLabel", frame)
-	label.Size = UDim2.new(1, 0, 0.7, 0)
-	label.Position = UDim2.new(0, 0, 0, 0)
-	label.Text = "YOU ARE AN IDIOT ☻☻☻"
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.TextScaled = true
-	label.BackgroundTransparency = 1
-	label.Font = Enum.Font.Arcade
+    local text = Instance.new("TextLabel", frame)
+    text.Size = UDim2.new(1, 0, 0.6, 0)
+    text.BackgroundTransparency = 1
+    text.Text = "YOU ARE AN IDIOT ☻☻☻"
+    text.TextColor3 = Color3.new(1, 1, 1)
+    text.Font = Enum.Font.Arcade
+    text.TextScaled = true
 
-	local close = Instance.new("TextButton", frame)
-	close.Size = UDim2.new(0, 30, 0, 30)
-	close.Position = UDim2.new(1, -35, 0, 5)
-	close.Text = "X"
-	close.TextColor3 = Color3.new(1, 0, 0)
-	close.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
-	close.Font = Enum.Font.SourceSansBold
-	close.TextScaled = true
+    local close = Instance.new("TextButton", frame)
+    close.Size = UDim2.new(0, 30, 0, 30)
+    close.Position = UDim2.new(1, -35, 0, 5)
+    close.BackgroundColor3 = Color3.new(1, 0, 0)
+    close.Text = "X"
+    close.TextColor3 = Color3.new(1, 1, 1)
+    close.Font = Enum.Font.ArialBold
+    close.TextScaled = true
 
-	-- On close: double the windows
-	close.MouseButton1Click:Connect(function()
-		gui:Destroy()
-		spawnTrollGui()
-		spawnTrollGui()
-	end)
+    close.MouseButton1Click:Connect(function()
+        spawnPopup()
+        spawnPopup()
+    end)
 
-	-- Bounce movement
-	local speedX = math.random(2, 5) * (math.random(1, 2) == 1 and 1 or -1)
-	local speedY = math.random(2, 5) * (math.random(1, 2) == 1 and 1 or -1)
+    -- Bouncing animation
+    local runService = game:GetService("RunService")
+    local direction = Vector2.new(2, 2)
 
-	game:GetService("RunService").RenderStepped:Connect(function()
-		if not frame or not frame.Parent then return end
-		local pos = frame.Position
-		local newX = pos.X.Offset + speedX
-		local newY = pos.Y.Offset + speedY
+    runService.RenderStepped:Connect(function()
+        local absSize = frame.AbsoluteSize
+        local absPos = frame.AbsolutePosition
 
-		local screenWidth = gui.AbsoluteSize.X
-		local screenHeight = gui.AbsoluteSize.Y
-		local frameWidth = frame.AbsoluteSize.X
-		local frameHeight = frame.AbsoluteSize.Y
+        local newPos = frame.Position
+        newPos = UDim2.new(
+            0, frame.Position.X.Offset + direction.X,
+            0, frame.Position.Y.Offset + direction.Y
+        )
 
-		if newX <= 0 or newX + frameWidth >= screenWidth then
-			speedX = -speedX
-		end
-		if newY <= 0 or newY + frameHeight >= screenHeight then
-			speedY = -speedY
-		end
+        -- Screen size
+        local screenSize = gui.AbsoluteSize
 
-		frame.Position = UDim2.new(0, newX, 0, newY)
-	end)
+        if newPos.X.Offset <= 0 or newPos.X.Offset + absSize.X >= screenSize.X then
+            direction = Vector2.new(-direction.X, direction.Y)
+        end
+        if newPos.Y.Offset <= 0 or newPos.Y.Offset + absSize.Y >= screenSize.Y then
+            direction = Vector2.new(direction.X, -direction.Y)
+        end
+
+        frame.Position = newPos
+    end)
 end
 
--- Start the troll
-spawnTrollGui()
+-- Start with one popup
+spawnPopup()
