@@ -1,17 +1,4 @@
-local StarterGui = game:GetService("StarterGui")
-
-local function fakeChat()
-    while true do
-        task.wait(math.random(3, 7))
-        StarterGui:SetCore("ChatMakeSystemMessage", {
-            Text = "YOU ARE AN IDIOT ☻☻☻",
-            Color = Color3.fromRGB(255, 0, 0),
-            Font = Enum.Font.SourceSansBold
-        })
-    end
-end
-
-coroutine.wrap(fakeChat)()
+game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("test", "All")
 
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
