@@ -78,7 +78,7 @@ local function spawnPopup()
 
     -- Color flashing effect
     local isBlack = true
-    local flashSpeed = 0.1 -- Adjust speed (lower = faster flashing)
+    local flashSpeed = 1 -- Adjust speed (lower = faster flashing)
 
     runService.RenderStepped:Connect(function(deltaTime)
         -- Bouncing movement
