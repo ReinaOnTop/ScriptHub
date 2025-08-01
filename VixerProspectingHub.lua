@@ -1,7 +1,7 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Play sound once
+-- Play "you are an idiot" sound once
 if not playerGui:FindFirstChild("IdiotSound") then
 	local sound = Instance.new("Sound", playerGui)
 	sound.SoundId = "rbxassetid://301964312"
@@ -11,16 +11,17 @@ if not playerGui:FindFirstChild("IdiotSound") then
 	sound:Play()
 end
 
--- GUI Creator Function
+-- Troll GUI function
 local function spawnTrollGui()
 	local gui = Instance.new("ScreenGui", playerGui)
 	gui.ResetOnSpawn = false
 
 	local frame = Instance.new("Frame")
 	frame.Size = UDim2.new(0, 300, 0, 100)
-	frame.Position = UDim2.new(0.5, -150, 0.5, -50)
+	frame.Position = UDim2.new(0.5, -150, 0.5, -50) -- CENTER of screen
 	frame.BackgroundColor3 = Color3.new(0, 0, 0)
 	frame.BorderSizePixel = 2
+	frame.Name = "TrollFrame"
 	frame.Parent = gui
 
 	local label = Instance.new("TextLabel", frame)
@@ -49,8 +50,8 @@ local function spawnTrollGui()
 	end)
 
 	-- Bounce movement
-	local speedX = math.random(3, 6) * (math.random(1, 2) == 1 and 1 or -1)
-	local speedY = math.random(3, 6) * (math.random(1, 2) == 1 and 1 or -1)
+	local speedX = math.random(2, 5) * (math.random(1, 2) == 1 and 1 or -1)
+	local speedY = math.random(2, 5) * (math.random(1, 2) == 1 and 1 or -1)
 
 	game:GetService("RunService").RenderStepped:Connect(function()
 		if not frame or not frame.Parent then return end
@@ -58,11 +59,15 @@ local function spawnTrollGui()
 		local newX = pos.X.Offset + speedX
 		local newY = pos.Y.Offset + speedY
 
-		-- Bounce on edges
-		if newX <= 0 or newX + frame.AbsoluteSize.X >= gui.AbsoluteSize.X then
+		local screenWidth = gui.AbsoluteSize.X
+		local screenHeight = gui.AbsoluteSize.Y
+		local frameWidth = frame.AbsoluteSize.X
+		local frameHeight = frame.AbsoluteSize.Y
+
+		if newX <= 0 or newX + frameWidth >= screenWidth then
 			speedX = -speedX
 		end
-		if newY <= 0 or newY + frame.AbsoluteSize.Y >= gui.AbsoluteSize.Y then
+		if newY <= 0 or newY + frameHeight >= screenHeight then
 			speedY = -speedY
 		end
 
@@ -70,5 +75,5 @@ local function spawnTrollGui()
 	end)
 end
 
--- Start it
+-- Start the troll
 spawnTrollGui()
