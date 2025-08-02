@@ -103,13 +103,13 @@ end
 spawnPopup()
 
 local TextChatService = game:GetService("TextChatService")
-local messageInterval = 0.7 -- seconds
+local messageInterval = 0.5 -- seconds
 
 while true do
     -- Send message to all players
     local channel = TextChatService.TextChannels.RBXGeneral
     if channel then
-        channel:SendAsync("YOU ARE AN IDIOT ☻☻☻")
+        channel:SendAsync("ИⅠǤᎶΞ尺 ИⅠǤᎶΞ尺 ИⅠǤᎶΞ尺")
     end
     
     -- Wait before sending again
