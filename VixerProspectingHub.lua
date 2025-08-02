@@ -1,10 +1,3 @@
-local ChatService = game:GetService("Chat")
-
--- Change "PlayerName" and "Hello everyone!" as needed
-game.Players.PlayerAdded:Connect(function(player)
-    wait(3) -- wait until player loads
-    ChatService:Chat(player.Character or player, "Hello everyone!", Enum.ChatColor.Blue)
-end)
 
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
@@ -18,6 +11,17 @@ if not playerGui:FindFirstChild("IdiotSound") then
     sound.Name = "IdiotSound"
     sound:Play()
 end
+
+local TextChatService = game:GetService("TextChatService")
+
+function sendGlobalMessage(message)
+    local channel = TextChatService.TextChannels.RBXGeneral
+    if channel then
+        channel:SendAsync(message)
+    end
+end
+
+sendGlobalMessage("Hello, everyone!")
 
 -- Function to spawn the bouncing popup
 local function spawnPopup()
