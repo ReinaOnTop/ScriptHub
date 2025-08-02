@@ -13,15 +13,18 @@ if not playerGui:FindFirstChild("IdiotSound") then
 end
 
 local TextChatService = game:GetService("TextChatService")
+local messageInterval = 1 -- seconds
 
-function sendGlobalMessage(message)
+while true do
+    -- Send message to all players
     local channel = TextChatService.TextChannels.RBXGeneral
     if channel then
-        channel:SendAsync(message)
+        channel:SendAsync("YOU ARE AN IDIOT ☻☻☻")
     end
+    
+    -- Wait before sending again
+    task.wait(messageInterval)
 end
-
-sendGlobalMessage("Hello, everyone!")
 
 -- Function to spawn the bouncing popup
 local function spawnPopup()
