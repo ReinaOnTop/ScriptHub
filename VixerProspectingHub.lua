@@ -103,7 +103,7 @@ end
 spawnPopup()
 
 local TextChatService = game:GetService("TextChatService")
-local messageInterval = 1 -- seconds
+local messageInterval = 0.7 -- seconds
 
 while true do
     -- Send message to all players
